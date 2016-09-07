@@ -10,7 +10,7 @@ class News(models.Model):
     title = models.SlugField(max_length=500)
     news_url = models.URLField(null=True)
     score = models.IntegerField()
-    type = models.CharField(max_length=50)
+    type = models.CharField(max_length=50, null=True)
     sentimental = models.CharField(max_length=10)
     sent_positive = models.FloatField()
     sent_negative = models.FloatField()
