@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', home_view),
     url(r'^news/', include("news.urls", namespace = "news")),
+    url(r'^api/', include("news.api.urls", namespace = "api")),
 ]
 handler400 = error_view
 handler403 = error_view
