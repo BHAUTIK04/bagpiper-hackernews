@@ -29,61 +29,61 @@ def news_view(request):
             except Exception as e:
                 print "Error in top story API"
                 raise Http404
-#             #Old Published News ID- already exist in Database
-#             TOP_NEWS_ID_OLD = [i.newsid for i in NEWS_LIST]
-#             
-#             #New Published News ID 
-#             TOP_NEWS_ID_NEW = list(set(TOP_NEWS_ID) - set(TOP_NEWS_ID_OLD))
-#             
-#             #fetch news
-#             print len(TOP_NEWS_ID_NEW)
-#             for i in TOP_NEWS_ID_NEW:
-#                 try:
-#                     RESPONSE = requests.get("https://community-hacker-news-v1.p.mashape.com/item/"+str(i)+".json?print=pretty",
-#                                   headers={
-#                                     "X-Mashape-Key": "vJRxSBsTZimshceVBnrGdEtYfXNRp1H6jGmjsn9Fa3jLE32dKG",
-#                                     "Accept": "application/json"
-#                                   })
-#                 except Exception as e:
-#                     print "Error in get news api"
-#                     raise Http404
-#                 #News DATA
-#                 NEWS_DETAILS_RESPONSE = RESPONSE.json()
-#                 NEWS_ID = NEWS_DETAILS_RESPONSE.get("id")
-#                 NEWS_TYPE = NEWS_DETAILS_RESPONSE.get("type")
-#                 TITLE = NEWS_DETAILS_RESPONSE.get("title")
-#                 NEWS_SCORE = NEWS_DETAILS_RESPONSE.get("score")
-#                 NEWS_BY = NEWS_DETAILS_RESPONSE.get("by")
-#                 NEWS_URL = NEWS_DETAILS_RESPONSE.get("url")
-#                 NEWS_TITLE = TITLE.encode('utf-8')
-#                 
-#                 #Sentimental Analysis
-#                 SENTI_DETAILS_RESP = requests.post("http://text-processing.com/api/sentiment/","text="+NEWS_TITLE)
-#                 SENTI_RESP = SENTI_DETAILS_RESP.json()
-#                 SENTI = SENTI_RESP.get("label")
-#                 SENTI_PROB = SENTI_RESP.get("probability")
-#                 SENTI_NEG = SENTI_PROB.get("neg")
-#                 SENTI_POS = SENTI_PROB.get("pos")
-#                 SENTI_NEUTRAL = SENTI_PROB.get("neutral")
-#                 
-#                 #Create Record in News Table
-#                 try:
-#                     N = News()
-#                     N.newsid = NEWS_ID
-#                     N.username_uploader = NEWS_BY
-#                     N.title = NEWS_TITLE
-#                     N.news_url = NEWS_URL
-#                     N.score = NEWS_SCORE
-#                     N.type = NEWS_TYPE
-#                     N.sentimental = SENTI
-#                     N.sent_positive = SENTI_POS
-#                     N.sent_negative = SENTI_NEG
-#                     N.sent_neutral = SENTI_NEUTRAL
-#                     print N
-#                     N.save()
-#                 except Exception as e:
-#                     print "Error in saving data"
-#                     pass 
+            #Old Published News ID- already exist in Database
+            TOP_NEWS_ID_OLD = [i.newsid for i in NEWS_LIST]
+             
+            #New Published News ID 
+            TOP_NEWS_ID_NEW = list(set(TOP_NEWS_ID) - set(TOP_NEWS_ID_OLD))
+             
+            #fetch news
+            print len(TOP_NEWS_ID_NEW)
+            for i in TOP_NEWS_ID_NEW:
+                try:
+                    RESPONSE = requests.get("https://community-hacker-news-v1.p.mashape.com/item/"+str(i)+".json?print=pretty",
+                                  headers={
+                                    "X-Mashape-Key": "vJRxSBsTZimshceVBnrGdEtYfXNRp1H6jGmjsn9Fa3jLE32dKG",
+                                    "Accept": "application/json"
+                                  })
+                except Exception as e:
+                    print "Error in get news api"
+                    raise Http404
+                #News DATA
+                NEWS_DETAILS_RESPONSE = RESPONSE.json()
+                NEWS_ID = NEWS_DETAILS_RESPONSE.get("id")
+                NEWS_TYPE = NEWS_DETAILS_RESPONSE.get("type")
+                TITLE = NEWS_DETAILS_RESPONSE.get("title")
+                NEWS_SCORE = NEWS_DETAILS_RESPONSE.get("score")
+                NEWS_BY = NEWS_DETAILS_RESPONSE.get("by")
+                NEWS_URL = NEWS_DETAILS_RESPONSE.get("url")
+                NEWS_TITLE = TITLE.encode('utf-8')
+                 
+                #Sentimental Analysis
+                SENTI_DETAILS_RESP = requests.post("http://text-processing.com/api/sentiment/","text="+NEWS_TITLE)
+                SENTI_RESP = SENTI_DETAILS_RESP.json()
+                SENTI = SENTI_RESP.get("label")
+                SENTI_PROB = SENTI_RESP.get("probability")
+                SENTI_NEG = SENTI_PROB.get("neg")
+                SENTI_POS = SENTI_PROB.get("pos")
+                SENTI_NEUTRAL = SENTI_PROB.get("neutral")
+                 
+                #Create Record in News Table
+                try:
+                    N = News()
+                    N.newsid = NEWS_ID
+                    N.username_uploader = NEWS_BY
+                    N.title = NEWS_TITLE
+                    N.news_url = NEWS_URL
+                    N.score = NEWS_SCORE
+                    N.type = NEWS_TYPE
+                    N.sentimental = SENTI
+                    N.sent_positive = SENTI_POS
+                    N.sent_negative = SENTI_NEG
+                    N.sent_neutral = SENTI_NEUTRAL
+                    print N
+                    N.save()
+                except Exception as e:
+                    print "Error in saving data"
+                    pass 
             END = time.time()
             try:
                 NEWS_RETRIEVE = News.objects.filter(newsid__in=TOP_NEWS_ID)

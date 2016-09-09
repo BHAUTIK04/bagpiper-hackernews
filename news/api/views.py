@@ -11,7 +11,7 @@ from rest_framework.generics import CreateAPIView, UpdateAPIView, DestroyAPIView
 class NewsListAPIView(ListAPIView):
     serializer_class = NewsListSerializer
     model = serializer_class.Meta.model
-    #paginate_by = 100
+    
     
     def get_queryset(self):
         title = self.kwargs['title']
